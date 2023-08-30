@@ -30,12 +30,12 @@ const HorizontalScroller = ({ yearsData, activeYear, setActiveYear }) => {
         setScrollAmount(scrollItemIndex * itemWidth - offsetX);
     };
 
-    const windowResizeHanler = () => {
-        scrollTo(defaultActiveYear);
-    };
+    // const windowResizeHanler = () => {
+    //     scrollTo(activeYear);
+    // };
 
-    window.removeEventListener("resize", windowResizeHanler);
-    window.addEventListener("resize", windowResizeHanler);
+    // window.removeEventListener("resize", windowResizeHanler);
+    // window.addEventListener("resize", windowResizeHanler);
 
     const handleTouchMove = (event) => {
         if (!touchStarted && touchStartX.current !== null) {
@@ -81,6 +81,10 @@ const HorizontalScroller = ({ yearsData, activeYear, setActiveYear }) => {
         }
     };
 
+    const handleYearClick = (year) => {
+        setActiveYear(year);
+    };
+
     const showYears = () => {
         setYearsOpacity(1);
     };
@@ -91,12 +95,10 @@ const HorizontalScroller = ({ yearsData, activeYear, setActiveYear }) => {
 
     const scrollLeft = () => {
         setActiveYear(activeYear - 1);
-        scrollTo(activeYear - 1);
     };
 
     const scrollRight = () => {
         setActiveYear(activeYear + 1);
-        scrollTo(activeYear + 1);
     };
 
     let scrollItems = [];
@@ -140,8 +142,10 @@ const HorizontalScroller = ({ yearsData, activeYear, setActiveYear }) => {
                         let active = itemData.year == activeYear;
 
                         return (
-                            <div
+                            <a
+                                href="#"
                                 key={index}
+                                onClick={() => handleYearClick(itemData.year)}
                                 data-year={itemData.year}
                                 style={{ width: itemWidth + "px" }}
                                 className={
@@ -157,7 +161,7 @@ const HorizontalScroller = ({ yearsData, activeYear, setActiveYear }) => {
                                     {itemData.year}
                                 </span>
                                 {countSpan}
-                            </div>
+                            </a>
                         );
                     })}
                 </div>

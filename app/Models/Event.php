@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\EventType;
 use App\Models\Client;
 use App\Models\Employee;
+use App\Models\DaysHierarchy;
 
 class Event extends Model
 {
@@ -54,6 +55,9 @@ class Event extends Model
                                 clients.last_name AS client_last_name,
 
                                 DATE_FORMAT(start_time, "%Y-%m-%d") AS date,
+                                DATE_FORMAT(start_time, "%H:%i:%s") AS time,
+                                DATE_FORMAT(start_time, "%w") AS day_of_the_week,
+                                DATE_FORMAT(start_time, "%d") AS day,
                                 DATE_FORMAT(start_time, "%m") AS month,
                                 DATE_FORMAT(start_time, "%Y") AS year'))
              ->where('employees.id', '=', $employee->id)
@@ -124,23 +128,20 @@ class Event extends Model
         return $monthEventsCount ?? $months;
     }
 
-    static function hierarchizeEventsByDate($events) {
+    static function hierarchizeEventsByDate($events, $yearStart, $yearEnd) {
+        $daysHierarchy = new DaysHierarchy($yearStart, $yearEnd);
+        $hierarchizedEvents = $daysHierarchy->get();
+
         if (empty($events)) {
-            return [];
+            return $hierarchizedEvents;
         }
 
-        $hierarchizedEvents = [];
-
         foreach($events as $event) {
-            if (!isset($hierarchizedEvents[$event->year])) {
-                $hierarchizedEvents[$event->year] = [];
+            if (!isset($hierarchizedEvents[$event->year][$event->month][$event->day])) {
+                continue;
+            } else {
+                $hierarchizedEvents[$event->year][$event->month][$event->day]['events'][$event->time] = $event;
             }
-            if (!isset($hierarchizedEvents[$event->year][$event->month])) {
-                $hierarchizedEvents[$event->year][$event->month] = [];
-            }
-
-            $hierarchizedEvents[$event->year][$event->month][$event->date] = $event;
-
         }
 
         return $hierarchizedEvents;

@@ -185,4 +185,15 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Week starts from sunday or from monday
+    |--------------------------------------------------------------------------
+    |
+    | This variable set system week starts from sunday (0) or from monday (1).
+    |
+    */
+
+    'week_first_day' => 1,
+
 ];

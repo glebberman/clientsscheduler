@@ -28,7 +28,7 @@ class Year extends Model
         $markedYear = array_map(function($year){
             $year = ['year' => $year, 'current' => $year === date('Y')];
             return $year;
-        });
+        }, $years);
 
         return $markedYear;
     }
@@ -49,7 +49,6 @@ class Year extends Model
         $yearsWithEventsCount = self::getEventsCountEveryYearByEmployee($employee)
                                         ->pluck('count', 'year')
                                         ->all();
-                                        
                                         
         if (empty($yearsWithEventsCount)) {
             return $everyYear;
@@ -98,6 +97,7 @@ class Year extends Model
         return $days;
     }
 
+
     static function getEventsByEmployeeAndYear(Employee $employee, int $year): object {
         $events = DB::table('events')
              ->join('event_types', 'event_types.id', '=', 'events.event_types_id')
@@ -112,6 +112,8 @@ class Year extends Model
 
         return $events ?? [];
     }  
+
+
     
     
 }
