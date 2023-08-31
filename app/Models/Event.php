@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\EventType;
 use App\Models\Client;
 use App\Models\Employee;
-use App\Models\DaysHierarchy;
+use App\Models\Days;
 
 class Event extends Model
 {
@@ -129,7 +129,7 @@ class Event extends Model
     }
 
     static function hierarchizeEventsByDate($events, $yearStart, $yearEnd) {
-        $daysHierarchy = new DaysHierarchy($yearStart, $yearEnd);
+        $daysHierarchy = new Day($yearStart, $yearEnd);
         $hierarchizedEvents = $daysHierarchy->get();
 
         if (empty($events)) {

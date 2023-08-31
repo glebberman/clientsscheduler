@@ -8,22 +8,22 @@ use App\Models\Month;
 
 class Month extends Model
 {
-
-    
-
-    static function getEventsCountEveryYearByEmployee(Employee $employee): object {
-        $countByYear = DB::table('events')
-             ->join('event_types', 'event_types.id', '=', 'events.event_types_id')
-             ->join('employees', 'employees.id', '=', 'events.employees_id')
-             ->select(DB::raw('DATE_FORMAT(start_time, "%Y") AS year, count(*) as count'))
-             ->where('event_types.client_is_not_involved', '<>', 1)
-             ->where('employees.id', '=', $employee->id)
-             ->groupBy('year')
-             ->get();
-
-        return $countByYear ?? [];
-    }  
-
-    
+ 
+    static function getNameList() {
+        return [
+            '1' => __('january'),
+            '2' => __('february'),
+            '3' => __('march'),
+            '4' => __('april'),
+            '5' => __('may'),
+            '6' => __('june'),
+            '7' => __('july'),
+            '8' => __('august'),
+            '9' => __('september'),
+            '10' => __('october'),
+            '11' => __('november'),
+            '12' => __('december')
+        ];
+    }
 
 }

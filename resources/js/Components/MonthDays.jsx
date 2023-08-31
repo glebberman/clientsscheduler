@@ -1,6 +1,14 @@
 import React from "react";
+import utils from "../utils";
 
-const MonthDays = ({ activeYear, activeMonth, events, weekFirstDay }) => {
+const MonthDays = ({
+    activeYear,
+    activeMonth,
+    events,
+    weekFirstDay,
+    daysNamesShortList,
+    monthsNamesList,
+}) => {
     let prevMonth, prevMonthYear, nextMonth, nextMonthYear;
 
     if (activeMonth === "01") {
@@ -76,6 +84,34 @@ const MonthDays = ({ activeYear, activeMonth, events, weekFirstDay }) => {
 
     return (
         <div className="days-grid">
+            <h2 className="sm:text-4xl md:text-6xl lg:text-10xl sm:mb-6 md:mb-8 lg:mb-12">
+                {utils.capitalizeFirstLetter(
+                    monthsNamesList[parseInt(activeMonth)]
+                )}
+            </h2>
+            <div className="title grid grid-cols-7 sm:text-base md:text-xl lg:text-4xl sm:mb-2 md:mb-5 lg:mb-10 text-bold">
+                <span>
+                    {utils.capitalizeFirstLetter(daysNamesShortList[1])}
+                </span>
+                <span>
+                    {utils.capitalizeFirstLetter(daysNamesShortList[2])}
+                </span>
+                <span>
+                    {utils.capitalizeFirstLetter(daysNamesShortList[3])}
+                </span>
+                <span>
+                    {utils.capitalizeFirstLetter(daysNamesShortList[4])}
+                </span>
+                <span>
+                    {utils.capitalizeFirstLetter(daysNamesShortList[5])}
+                </span>
+                <span>
+                    {utils.capitalizeFirstLetter(daysNamesShortList[6])}
+                </span>
+                <span>
+                    {utils.capitalizeFirstLetter(daysNamesShortList[7])}
+                </span>
+            </div>
             {weeks.map((week, index) => getWeekElements(week, index))}
         </div>
     );
@@ -106,7 +142,6 @@ const getDayElements = (days) => {
     return days.map((day, index) => {
         const isActiveMonthClasses =
             day.monthRelative === "current" ? "" : "text-gray-300";
-        console.log(day);
 
         const eventClasses = day.data.events
             ? "rounded-full bg-blue-400 h-6 w-6 ml-2 text-white text-center"

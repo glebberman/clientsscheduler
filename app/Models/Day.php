@@ -6,7 +6,7 @@ use DatePeriod;
 use DateTime;
 use DateInterval;
 
-class DaysHierarchy {
+class Day {
 
     private $days = [];
     private $yearStart;
@@ -36,7 +36,7 @@ class DaysHierarchy {
                 $this->days[$date->format('Y')][$date->format('m')] = [];
             }
             $this->days[$date->format('Y')][$date->format('m')][$date->format('d')] = [ 
-                'dayOfWeek' => $date->format('w')
+                'dayOfWeek' => ucfirst(trans(strtolower($date->format('w'))))
             ];
         }
 
@@ -45,6 +45,30 @@ class DaysHierarchy {
 
     function get() {
         return $this->days;
+    }
+
+    static function getNameList() {
+        return [
+            '1' => __('monday'),
+            '2' => __('tuesday'),
+            '3' => __('wednesday'),
+            '4' => __('thursday'),
+            '5' => __('friday'),
+            '6' => __('saturday'),
+            '7' => __('sunday')
+        ];
+    }
+
+    static function getShortNameList() {
+        return [
+            '1' => __('mon'),
+            '2' => __('tue'),
+            '3' => __('wed'),
+            '4' => __('thu'),
+            '5' => __('fri'),
+            '6' => __('sat'),
+            '7' => __('sun')
+        ];
     }
 
 }
