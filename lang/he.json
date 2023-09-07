@@ -1,7 +1,7 @@
 {
     "january": "ינואר",
     "february": "פברואר",
-    "mars": "מרץ",
+    "march": "מרץ",
     "april": "אפריל",
     "may": "מאי",
     "june": "יוני",
@@ -13,18 +13,19 @@
     "december": "דצמבר",
     "monday": "יום שני",
     "tuesday": "יום שלישי",
-    "wendesday": "יום רביעי",
+    "wednesday": "יום רביעי",
     "thursday": "יום חמישי",
     "friday": "יום שישי",
     "saturday": "שבת",
     "sunday": "ראשון",
     "mon": "ב'",
     "tue": "ג'",
-    "wen": "ד'",
+    "wed": "ד'",
     "thu": "ה'",
     "fri": "ו'",
     "sat": "שבת",
     "sun": "א'",
 
-    "calendar": "לוח"
+    "calendar": "לוח",
+    "schedule": "לוח זמנים"
 }

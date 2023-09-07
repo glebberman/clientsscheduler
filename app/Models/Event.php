@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\EventType;
 use App\Models\Client;
 use App\Models\Employee;
+use App\Models\Year;
 use App\Models\Days;
 
 class Event extends Model
@@ -128,6 +129,73 @@ class Event extends Model
         return $monthEventsCount ?? $months;
     }
 
+    static function getEventsCountEveryYear(): object {
+        $countByYear = DB::table('events')
+             ->join('event_types', 'event_types.id', '=', 'events.event_types_id')
+             ->select(DB::raw('DATE_FORMAT(start_time, "%Y") AS year, count(*) as count'))
+             ->where('event_types.client_is_not_involved', '<>', 1)
+             ->groupBy('year')
+             ->get();
+
+        return $countByYear ?? [];
+    }   
+
+    static function getEveryYearWithCountsByEmployee(Employee $employee): array {
+        $everyYear = self::getEveryYearWithZeroEventsCount();
+        $yearsWithEventsCount = self::getEventsCountEveryYearByEmployee($employee)
+                                        ->pluck('count', 'year')
+                                        ->all();
+                                        
+        if (empty($yearsWithEventsCount)) {
+            return $everyYear;
+        }
+
+        $everyYearWithEventsCount = array_replace($everyYear, $yearsWithEventsCount);
+
+        return $everyYearWithEventsCount;
+    }
+
+    static function getEveryYearWithCounts(): array {
+        $everyYear = self::getEveryYearWithZeroEventsCount();
+        $yearsWithEventsCount = self::getEventsCountEveryYear()
+                                        ->pluck('count', 'year')
+                                        ->all();
+                                        
+                                        
+        if (empty($yearsWithEventsCount)) {
+            return $everyYear;
+        }
+
+        $everyYearWithEventsCount = array_replace($everyYear, $yearsWithEventsCount);
+        $everyYearWithEventsCountWithMarkedCurrentYear = Year::markCurrentYear($everyYearWithEventsCount);
+
+        return $everyYearWithEventsCountWithMarkedCurrentYear;
+    }
+
+    static function getEveryYearWithZeroEventsCount(): array{
+        $oneHundredYearsAhead = (int) date('Y') + 100;
+        $years = array();
+        
+        for($year = 1970; $year <= $oneHundredYearsAhead; $year++){
+            $years[$year] = 0;
+        }
+
+        return $years;
+    }
+
+    static function getEventsCountEveryYearByEmployee(Employee $employee): object {
+        $countByYear = DB::table('events')
+             ->join('event_types', 'event_types.id', '=', 'events.event_types_id')
+             ->join('employees', 'employees.id', '=', 'events.employees_id')
+             ->select(DB::raw('DATE_FORMAT(start_time, "%Y") AS year, count(*) as count'))
+             ->where('event_types.client_is_not_involved', '<>', 1)
+             ->where('employees.id', '=', $employee->id)
+             ->groupBy('year')
+             ->get();
+
+        return $countByYear ?? [];
+    }  
+
     static function hierarchizeEventsByDate($events, $yearStart, $yearEnd) {
         $daysHierarchy = new Day($yearStart, $yearEnd);
         $hierarchizedEvents = $daysHierarchy->get();
@@ -137,10 +205,13 @@ class Event extends Model
         }
 
         foreach($events as $event) {
-            if (!isset($hierarchizedEvents[$event->year][$event->month][$event->day])) {
+            if (!isset($hierarchizedEvents[$event->year]['months'][$event->month]['days'][$event->day])) {
                 continue;
             } else {
-                $hierarchizedEvents[$event->year][$event->month][$event->day]['events'][$event->time] = $event;
+                $hierarchizedEvents[$event->year]['months'][$event->month]['days'][$event->day]['events'][$event->time] = $event;
+                $hierarchizedEvents[$event->year]['count']++;
+                $hierarchizedEvents[$event->year]['months'][$event->month]['count']++;
+                $hierarchizedEvents[$event->year]['months'][$event->month]['days'][$event->day]['count']++;
             }
         }
 

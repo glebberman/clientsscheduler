@@ -1,7 +1,7 @@
 {
     "january": "january",
     "february": "february",
-    "mars": "mars",
+    "march": "march",
     "april": "april",
     "may": "may",
     "june": "june",
@@ -13,18 +13,19 @@
     "december": "december",
     "monday": "monday",
     "tuesday": "tuesday",
-    "wendesday": "wendesday",
+    "wednesday": "wednesday",
     "thursday": "thursday",
     "friday": "friday",
     "saturday": "saturday",
     "sunday": "sunday",
     "mon": "mon",
     "tue": "tue",
-    "wen": "wen",
+    "wed": "wen",
     "thu": "thu",
     "fri": "fri",
     "sat": "sat",
     "sun": "sun",
 
-    "calendar": "calendar"
+    "calendar": "calendar",
+    "schedule": "schedule"
 }

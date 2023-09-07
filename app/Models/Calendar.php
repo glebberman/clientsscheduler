@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\Employee;
+use App\Models\Event;
 use App\Models\Year;
 use App\Models\Months;
 
@@ -12,12 +13,12 @@ class Calendar extends Model
 {
 
     static function getYears(Employee $employee = null) {
-        $years = Year::getEveryYearWithCountsByEmployee($employee);
+        $years = Event::getEveryYearWithCountsByEmployee($employee);
         return $years;
     }
 
     static function getMonthsOfTheYear(Employee $employee = null) {
-        $months = Year::getEveryYearWithCountsByEmployee($employee, $year);
+        $months = Event::getCountEveryMonthOfYearByEmployee($employee, $year);
         return $months;
     }
 

@@ -1,9 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
+import utils from "../utils";
 
-const HorizontalScroller = ({ yearsData, activeYear, setActiveYear }) => {
+const HorizontalScroller = ({
+    id,
+    dataToScroll,
+    activeItem,
+    setActiveItem,
+    setShowDay,
+}) => {
     const [scrollAmount, setScrollAmount] = useState(0);
     const [touchStarted, setTouchStarted] = useState(false);
-    const [yearsOpacity, setYearsOpacity] = useState(0);
+    const [itemsOpacity, setItemsOpacity] = useState(0);
+    const [translateX, setTranslateX] = useState(0);
     const scrollContainerRef = useRef(null);
     const touchStartX = useRef(null);
     const itemWidth = 200;
@@ -13,29 +21,24 @@ const HorizontalScroller = ({ yearsData, activeYear, setActiveYear }) => {
     };
 
     useEffect(() => {
-        scrollTo(activeYear);
-        showYears();
+        scrollTo(activeItem);
+        showScroller();
+        correctTranslate();
     });
 
-    const scrollTo = (year) => {
+    const scrollTo = (item) => {
         const nodes = Array.prototype.slice.call(
-            document.querySelector(".years-container").children
+            document.getElementById(id).children
         );
         const scrollItem = document.querySelector(
-            `.years-container [data-year='${year}']`
+            `#${id} [data-item='${item}']`
         );
-        const scrollItemIndex = nodes.indexOf(scrollItem) - 1;
+        const scrollItemIndex = nodes.indexOf(scrollItem);
         const offsetX = window.innerWidth / 2 - itemWidth * 1.5;
 
         setScrollAmount(scrollItemIndex * itemWidth - offsetX);
+        // setShowDay(false);
     };
-
-    // const windowResizeHanler = () => {
-    //     scrollTo(activeYear);
-    // };
-
-    // window.removeEventListener("resize", windowResizeHanler);
-    // window.addEventListener("resize", windowResizeHanler);
 
     const handleTouchMove = (event) => {
         if (!touchStarted && touchStartX.current !== null) {
@@ -60,115 +63,172 @@ const HorizontalScroller = ({ yearsData, activeYear, setActiveYear }) => {
         setTouchStarted(false);
     };
 
-    const handleScroll = (direction) => {
-        const scrollStep = itemWidth;
-        const maxScroll = (Object.keys(yearsData).length - 1) * scrollStep;
-
-        if (direction === "left" && scrollAmount > 0) {
-            scrollLeft();
-        } else if (direction === "right" && scrollAmount < maxScroll) {
-            scrollRight();
-        }
+    const handleScroll = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
     };
 
     const handleMouseWheel = (event) => {
-        const scrollStep = itemWidth;
-        const maxScroll = (Object.keys(yearsData).length - 1) * scrollStep;
-        if (event.deltaY < 0 && scrollAmount > 0) {
+        if (event.deltaY < 0) {
             scrollLeft();
-        } else if (event.deltaY > 0 && scrollAmount < maxScroll) {
+        } else if (event.deltaY > 0) {
             scrollRight();
         }
     };
 
-    const handleYearClick = (year) => {
-        setActiveYear(year);
+    const handleItemClick = (item) => {
+        setActiveItem(item);
+        setShowDay(false);
     };
 
-    const showYears = () => {
-        setYearsOpacity(1);
+    const showScroller = () => {
+        setItemsOpacity(1);
     };
 
-    const hideYears = () => {
-        setYearsOpacity(0);
+    const hideScroller = () => {
+        setItemsOpacity(0);
+    };
+
+    const correctTranslate = () => {
+        const itemIndex = Object.keys(dataToScroll)
+            .sort((a, b) => parseInt(a) - parseInt(b))
+            .indexOf("" + activeItem);
+
+        if (window.innerWidth < Object.keys(dataToScroll).length * itemWidth) {
+            const stickingOut = Math.floor(
+                (Object.keys(dataToScroll).length * itemWidth -
+                    window.innerWidth) /
+                    itemWidth /
+                    2
+            );
+            console.log(
+                Object.keys(dataToScroll).sort((a, b) => {
+                    return parseInt(a) > parseInt(b);
+                })
+            );
+
+            const itemsWidthsPerWindow = Math.floor(
+                window.innerWidth / itemWidth
+            );
+
+            if (itemIndex <= stickingOut) {
+                setTranslateX((stickingOut + 1 - itemIndex) * itemWidth);
+            } else if (itemIndex > itemsWidthsPerWindow) {
+                setTranslateX(
+                    (itemsWidthsPerWindow + stickingOut - 1 - itemIndex) *
+                        itemWidth
+                );
+            }
+        }
     };
 
     const scrollLeft = () => {
-        setActiveYear(activeYear - 1);
+        var activeItemIndex = Object.keys(dataToScroll).indexOf(
+            "" + activeItem
+        );
+
+        var previousItem =
+            Object.keys(dataToScroll)[activeItemIndex - 1] ??
+            Object.keys(dataToScroll).slice(-1);
+
+        setActiveItem(previousItem);
+        setShowDay(false);
     };
 
     const scrollRight = () => {
-        setActiveYear(activeYear + 1);
+        var activeItemIndex = Object.keys(dataToScroll).indexOf(
+            "" + activeItem
+        );
+
+        var nextItem =
+            Object.keys(dataToScroll)[activeItemIndex + 1] ??
+            Object.keys(dataToScroll)[0];
+
+        setActiveItem(nextItem);
+        setShowDay(false);
     };
 
     let scrollItems = [];
-    for (let year in yearsData) {
-        scrollItems.push({ year, count: yearsData[year] });
+    for (let scrollItemName in dataToScroll) {
+        scrollItems.push({
+            number: scrollItemName,
+            item: dataToScroll[scrollItemName].title,
+            count: dataToScroll[scrollItemName].eventsCount,
+        });
     }
 
+    scrollItems.sort((a, b) => {
+        return parseInt(a.number) - parseInt(b.number);
+    });
+
     const opacityTransition =
-        yearsOpacity === 0 ? "transition-opacity" : "transition";
+        itemsOpacity === 0 ? "transition-opacity" : "transition";
+
+    const itemsElements = scrollItems.map((itemData, index) => {
+        let countSpan = itemData.count ? (
+            <span
+                className="count absolute inline-block text-sm 
+                            -mx-1 sm:-mx-1 md:-mx-2 lg:-mx-2 
+                            -my-1 sm:-my-1 md:-my-2 lg:-my-2 
+                            sm:text-sm md:text-base lg:text-base 
+                            text-blue-400 h-6 w-6 ml-2 text-white text-center"
+            >
+                {itemData.count}
+            </span>
+        ) : (
+            ""
+        );
+
+        let active = itemData.number == activeItem;
+
+        return (
+            <a
+                href="#"
+                key={index}
+                onClick={() => handleItemClick(itemData.number)}
+                data-item={itemData.number}
+                style={{ width: itemWidth + "px" }}
+                className={
+                    "px-4 py-2 z-10 text-center" + (active ? " current" : "")
+                }
+            >
+                <span className={"scroll-item" + (active ? " font-bold" : "")}>
+                    {itemData.item}
+                </span>
+                {countSpan}
+            </a>
+        );
+    });
 
     return (
         <div className="horizontal-scroller-container relative">
             <button
-                className="px-4 py-2 z-20 border border-gray-300 rounded-l bg-gray-100 absolute top-0 left-0 focus:outline-none"
-                onClick={() => handleScroll("left")}
+                className="px-4 py-2 z-20 text-blue-400 hover:text-blue-300 rounded-l bg-gray-200 absolute top-0 left-0 focus:outline-none"
+                onClick={scrollLeft}
             >
                 &lt;
             </button>
-            <div className="overflow-x-hidden flex items-center z-10">
+            <div className="overflow-x-hidden flex items-center z-10 justify-center">
                 <div
-                    className={`years-container flex ${opacityTransition}`}
+                    id={id}
+                    className={`items-container flex ${opacityTransition}`}
                     style={{
-                        opacity: yearsOpacity,
-                        transform: `translateX(-${scrollAmount}px)`,
+                        opacity: itemsOpacity,
+                        transform: `translateX(${translateX}px)`,
                     }}
                     onTouchStart={handleTouchStart}
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
                     onWheel={handleMouseWheel}
+                    onScroll={handleScroll}
                     ref={scrollContainerRef}
                 >
-                    {scrollItems.map((itemData, index) => {
-                        let countSpan = itemData.count ? (
-                            <span className="count inline-block rounded-full bg-blue-400 h-6 w-6 ml-2 text-white text-center">
-                                {itemData.count}
-                            </span>
-                        ) : (
-                            ""
-                        );
-
-                        let active = itemData.year == activeYear;
-
-                        return (
-                            <a
-                                href="#"
-                                key={index}
-                                onClick={() => handleYearClick(itemData.year)}
-                                data-year={itemData.year}
-                                style={{ width: itemWidth + "px" }}
-                                className={
-                                    "px-4 py-2 z-10 text-center" +
-                                    (active ? " current" : "")
-                                }
-                            >
-                                <span
-                                    className={
-                                        "year" + (active ? " font-bold" : "")
-                                    }
-                                >
-                                    {itemData.year}
-                                </span>
-                                {countSpan}
-                            </a>
-                        );
-                    })}
+                    {itemsElements}
                 </div>
             </div>
             <button
-                className="px-4 py-2 border z-20 border-l-0 border-gray-300 rounded-r bg-gray-100 absolute top-0 right-0 focus:outline-none"
-                onClick={() => handleScroll("right")}
+                className="px-4 py-2 z-20 text-blue-400 hover:text-blue-300 rounded-r bg-gray-200 absolute top-0 right-0 focus:outline-none"
+                onClick={scrollRight}
             >
                 &gt;
             </button>

@@ -1,7 +1,7 @@
 {
     "january": "январь",
     "february": "февраль",
-    "mars": "март",
+    "march": "март",
     "april": "апрель",
     "may": "май",
     "june": "июнь",
@@ -11,9 +11,23 @@
     "october": "октябрь",
     "november": "ноябрь",
     "december": "декабрь",
+
+    "january_declension": "января",
+    "february_declension": "февраля",
+    "march_declension": "марта",
+    "april_declension": "апреля",
+    "may_declension": "мая",
+    "june_declension": "июня",
+    "july_declension": "июля",
+    "august_declension": "августа",
+    "september_declension": "сентября",
+    "october_declension": "октября",
+    "november_declension": "ноября",
+    "december_declension": "декабря",
+
     "monday": "понедельник",
     "tuesday": "вторник",
-    "wendesday": "среда",
+    "wednesday": "среда",
     "thursday": "четверг",
     "friday": "пятница",
     "saturday": "суббота",
@@ -26,5 +40,6 @@
     "sat": "сб",
     "sun": "вс",
 
-    "calendar": "Календарь"
+    "calendar": "календарь",
+    "schedule": "расписание"
 }

@@ -23,6 +23,7 @@ class CalendarController extends Controller
         
         return Inertia::render('Calendar', [
             'weekFirstDay' => config('week_first_day'),
+            'defaultActiveDay' => date('Y-m-d'),
             'defaultActiveMonth' => date('m'),
             'defaultActiveYear' => date('Y'),
             'defaultEmployee' => $defaultEmployee,
@@ -35,7 +36,7 @@ class CalendarController extends Controller
                 return json_decode(file_get_contents(base_path('lang/'. app()->getLocale() .'.json')), true);
             },
             'events' => Event::hierarchizeEventsByDate($events, array_key_first($years), array_key_last($years)),
-            'everyDay'  => Year::getEveryYearWithCounts(date('Y'))
+            'everyDay'  => Event::getEveryYearWithCounts(date('Y'))
         ]);
     }
 

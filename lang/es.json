@@ -1,7 +1,7 @@
 {
     "january": "enero",
     "february": "febrero",
-    "mars": "marzo",
+    "march": "marzo",
     "april": "abril",
     "may": "mayo",
     "june": "junio",
@@ -13,18 +13,19 @@
     "december": "diciembre",
     "monday": "lunes",
     "tuesday": "martes",
-    "wendesday": "miércoles",
+    "wednesday": "miércoles",
     "thursday": "jueves",
     "friday": "viernes",
     "saturday": "sábado",
     "sunday": "domingo",
     "mon": "lun",
     "tue": "mar",
-    "wen": "mié",
+    "wed": "mié",
     "thu": "jue",
     "fri": "vie",
     "sat": "sáb",
     "sun": "dom",
 
-    "calendar": "calendar"
+    "calendar": "calendario",
+    "schedule": "cronograma"
 }

@@ -7,22 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Year extends Model
 {
-    static function getEveryYearWithCounts(): array {
-        $everyYear = self::getEveryYearWithZeroEventsCount();
-        $yearsWithEventsCount = self::getEventsCountEveryYear()
-                                        ->pluck('count', 'year')
-                                        ->all();
-                                        
-                                        
-        if (empty($yearsWithEventsCount)) {
-            return $everyYear;
-        }
-
-        $everyYearWithEventsCount = array_replace($everyYear, $yearsWithEventsCount);
-        $everyYearWithEventsCountWithMarkedCurrentYear = self::markCurrentYear($everyYearWithEventsCount);
-
-        return $everyYearWithEventsCountWithMarkedCurrentYear;
-    }
+    
 
     static function markCurrentYear(array $years) : array {
         $markedYear = array_map(function($year){
@@ -33,56 +18,9 @@ class Year extends Model
         return $markedYear;
     }
 
-    static function getEventsCountEveryYear(): object {
-        $countByYear = DB::table('events')
-             ->join('event_types', 'event_types.id', '=', 'events.event_types_id')
-             ->select(DB::raw('DATE_FORMAT(start_time, "%Y") AS year, count(*) as count'))
-             ->where('event_types.client_is_not_involved', '<>', 1)
-             ->groupBy('year')
-             ->get();
 
-        return $countByYear ?? [];
-    }   
+ 
 
-    static function getEveryYearWithCountsByEmployee(Employee $employee): array {
-        $everyYear = self::getEveryYearWithZeroEventsCount();
-        $yearsWithEventsCount = self::getEventsCountEveryYearByEmployee($employee)
-                                        ->pluck('count', 'year')
-                                        ->all();
-                                        
-        if (empty($yearsWithEventsCount)) {
-            return $everyYear;
-        }
-
-        $everyYearWithEventsCount = array_replace($everyYear, $yearsWithEventsCount);
-
-        return $everyYearWithEventsCount;
-    }
-
-    static function getEventsCountEveryYearByEmployee(Employee $employee): object {
-        $countByYear = DB::table('events')
-             ->join('event_types', 'event_types.id', '=', 'events.event_types_id')
-             ->join('employees', 'employees.id', '=', 'events.employees_id')
-             ->select(DB::raw('DATE_FORMAT(start_time, "%Y") AS year, count(*) as count'))
-             ->where('event_types.client_is_not_involved', '<>', 1)
-             ->where('employees.id', '=', $employee->id)
-             ->groupBy('year')
-             ->get();
-
-        return $countByYear ?? [];
-    }   
-
-
-    static function getEveryYearWithZeroEventsCount(): array{
-        $oneHundredYearsAhead = (int) date('Y') + 100;
-        $years = array();
-        
-        for($year = 1970; $year <= $oneHundredYearsAhead; $year++){
-            $years[$year] = 0;
-        }
-
-        return $years;
-    }
 
     static function getDaysOfClosestYears($year) {
 

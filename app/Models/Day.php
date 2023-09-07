@@ -30,12 +30,13 @@ class Day {
 
         foreach ($period as $date) {
             if (!isset($this->days[$date->format('Y')])) {
-                $this->days[$date->format('Y')] = [];
+                $this->days[$date->format('Y')] = [ 'count' => 0, 'months' => []];
             }
-            if (!isset($this->days[$date->format('Y')][$date->format('m')])) {
-                $this->days[$date->format('Y')][$date->format('m')] = [];
+            if (!isset($this->days[$date->format('Y')]['months'][$date->format('m')])) {
+                $this->days[$date->format('Y')]['months'][$date->format('m')] = [ 'count' => 0, 'days' => [] ];
             }
-            $this->days[$date->format('Y')][$date->format('m')][$date->format('d')] = [ 
+            $this->days[$date->format('Y')]['months'][$date->format('m')]['days'][$date->format('d')] = [ 
+                'count' => 0,
                 'dayOfWeek' => ucfirst(trans(strtolower($date->format('w'))))
             ];
         }
