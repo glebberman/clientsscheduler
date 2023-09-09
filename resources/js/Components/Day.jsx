@@ -5,17 +5,19 @@ import Hour from "@/Components/Hour";
 const Day = ({
     dayEvents,
     activeDay,
+    settings,
     setActiveDay,
     monthsNamesList,
     dayName,
 }) => {
-    let rows = [];
-    let dayDateArr = activeDay.split("-");
-    let activeYear = dayDateArr[0];
-    let activeMonthName = monthsNamesList[parseInt(dayDateArr[1])].declension;
-    let activeDayNum = parseInt(dayDateArr[2]);
+    const rows = [];
+    const dayDateArr = activeDay.split("-");
+    const activeYear = dayDateArr[0];
+    const activeMonthName = monthsNamesList[parseInt(dayDateArr[1])].declension;
+    const activeDayNum = parseInt(dayDateArr[2]);
+    const workingHours = [...settings.workingHours.matchAll(/\d+(?=\:)/g)];
 
-    for (let i = 0; i <= 24; i++) {
+    for (let i = parseInt(workingHours[0]); i <= workingHours[1]; i++) {
         const hourNum = i < 24 ? i : 0;
 
         rows.push(

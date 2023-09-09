@@ -10,6 +10,7 @@ import HorizontalScroller from "@/Components/HorizontalScroller";
 
 export default function Calendar({
     auth,
+    settings,
     weekFirstDay,
     defaultActiveYear,
     defaultActiveMonth,
@@ -92,13 +93,6 @@ export default function Calendar({
                 setShowDay={setShowDay}
             />
 
-            {/* <MonthList
-                events={events}
-                monthsNamesList={monthsNamesList}
-                setActiveMonth={handleSetActiveMonth}
-                activeMonth={activeMonth}
-            /> */}
-
             <div className="py-12 h-[calc(100vh-235px)] overflow-y-auto">
                 <div
                     className={
@@ -114,6 +108,7 @@ export default function Calendar({
                                 ][activeDayMonthNumber]
                             }
                             activeDay={activeDay}
+                            settings={settings}
                             dayName={
                                 daysNamesList[
                                     parseInt(

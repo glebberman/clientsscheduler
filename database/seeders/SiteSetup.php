@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Settings;
 
 class SiteSetup extends Seeder
 {
@@ -17,7 +18,7 @@ class SiteSetup extends Seeder
     public function run(): void
     {
         foreach (self::$defaultSettings as $settingName => $value) {
-            YourModel::create([
+            Settings::create([
                 'name' => $settingName,
                 'value' => $value
             ]);

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->integer('id', true)->comment('Primary Key');
             $table->string('name')->nullable();
             $table->string('value')->nullable();
+            $table->timestamp('updated_at')->useCurrentOnUpdate()->useCurrent();
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 
