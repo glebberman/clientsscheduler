@@ -1,14 +1,20 @@
 import { useState } from "react";
 import ApplicationLogo from "@/Components/ApplicationLogo";
+import utils from "@/utils";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
 
-export default function Authenticated({ user, header, children }) {
+export default function Authenticated({
+    user,
+    header,
+    children,
+    translations,
+}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
-
+    console.log(translations);
     return (
         <div className="min-h-screen bg-gray-100">
             <nav className="bg-white border-b border-gray-100">
@@ -26,13 +32,25 @@ export default function Authenticated({ user, header, children }) {
                                     href={route("dashboard")}
                                     active={route().current("dashboard")}
                                 >
-                                    Dashboard
+                                    {utils.capitalizeFirstLetter(
+                                        translations.dashboard
+                                    )}
                                 </NavLink>
                                 <NavLink
                                     href={route("calendar")}
                                     active={route().current("calendar")}
                                 >
-                                    Calendar
+                                    {utils.capitalizeFirstLetter(
+                                        translations.schedule
+                                    )}
+                                </NavLink>
+                                <NavLink
+                                    href={route("settings")}
+                                    active={route().current("settings")}
+                                >
+                                    {utils.capitalizeFirstLetter(
+                                        translations.settings
+                                    )}
                                 </NavLink>
                             </div>
                         </div>
@@ -68,14 +86,18 @@ export default function Authenticated({ user, header, children }) {
                                         <Dropdown.Link
                                             href={route("profile.edit")}
                                         >
-                                            Profile
+                                            {utils.capitalizeFirstLetter(
+                                                translations.profile
+                                            )}
                                         </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route("logout")}
                                             method="post"
                                             as="button"
                                         >
-                                            Log Out
+                                            {utils.capitalizeFirstLetter(
+                                                translations.logout
+                                            )}
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>

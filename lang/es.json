@@ -1,4 +1,10 @@
 {
+    "language_name": "español",
+    "language_name_english": "spanish",
+    "language": "lenguaje",
+
+    "clients_scheduler": "Programador de clientes",
+
     "january": "enero",
     "february": "febrero",
     "march": "marzo",
@@ -27,5 +33,11 @@
     "sun": "dom",
 
     "calendar": "calendario",
-    "schedule": "cronograma"
+    "schedule": "cronograma",
+    "dashboard": "salpicadero",
+    "profile": "perfil",
+    "logout": "cerrar sesión",
+    "settings": "configuración",
+
+    "profile Information": "información del perfil"
 }

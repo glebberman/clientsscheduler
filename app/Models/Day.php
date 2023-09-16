@@ -5,20 +5,24 @@ namespace App\Models;
 use DatePeriod;
 use DateTime;
 use DateInterval;
+use App\Models\Settings;
 
 class Day {
 
+    private $days_of_week = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
     private $days = [];
     private $yearStart;
     private $yearEnd;
 
-    function __construct($yearStart, $yearEnd) {
-        $this->yearStart = $yearStart;
-        $this->yearEnd = $yearEnd;
+    function __construct(int $yearStart = null, int $yearEnd = null) {
+        $settings = Settings::getAssoc();
+
+        $this->yearStart = $yearStart ?? $settings['year_start'] ?? '1970';
+        $this->yearEnd = $yearEnd ?? $settings['year_end'] ?? (intval(date('Y')) + 100);
         $this->set();
     }
 
-    function set() {
+    function set() : array {
         $start = $this->yearStart <= $this->yearEnd ? new DateTime("{$this->yearStart}-01-01") : new DateTime("{$this->yearEnd}-12-31");
         $end = $this->yearStart <= $this->yearEnd ? new DateTime("{$this->yearEnd}-12-31") : new DateTime("{$this->yearStart}-01-01");
 
@@ -44,31 +48,31 @@ class Day {
         return $this->days;
     }
 
-    function get() {
+    function get() : array {
         return $this->days;
     }
 
-    static function getNameList() {
+    function getNameList() : array {
         return [
-            '1' => __('monday'),
-            '2' => __('tuesday'),
-            '3' => __('wednesday'),
-            '4' => __('thursday'),
-            '5' => __('friday'),
-            '6' => __('saturday'),
-            '7' => __('sunday')
+            '1' => 'monday',
+            '2' => 'tuesday',
+            '3' => 'wednesday',
+            '4' => 'thursday',
+            '5' => 'friday',
+            '6' => 'saturday',
+            '7' => 'sunday'
         ];
     }
 
-    static function getShortNameList() {
+    function getShortNameList() : array {
         return [
-            '1' => __('mon'),
-            '2' => __('tue'),
-            '3' => __('wed'),
-            '4' => __('thu'),
-            '5' => __('fri'),
-            '6' => __('sat'),
-            '7' => __('sun')
+            '1' => 'mon',
+            '2' => 'tue',
+            '3' => 'wed',
+            '4' => 'thu',
+            '5' => 'fri',
+            '6' => 'sat',
+            '7' => 'sun'
         ];
     }
 

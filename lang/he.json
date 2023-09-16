@@ -1,4 +1,10 @@
 {
+    "language_name": "עברית",
+    "language_name_english": "hebrew",
+    "language": "עברית",
+
+    "clients_scheduler": "מתזמן לקוחות",
+
     "january": "ינואר",
     "february": "פברואר",
     "march": "מרץ",
@@ -27,5 +33,11 @@
     "sun": "א'",
 
     "calendar": "לוח",
-    "schedule": "לוח זמנים"
+    "schedule": "לוח זמנים",
+    "dashboard": "לוח",
+    "profile": "פרופיל",
+    "logout": "להתנתק",
+    "settings": "הגדרות",
+
+    "profile Information": "פרטי הפרופיל"
 }

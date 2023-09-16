@@ -1,4 +1,10 @@
 {
+    "language_name": "русский",
+    "language_name_english": "russian",
+    "language": "язык",
+
+    "clients_scheduler": "планировщик для работы с клиентами",
+
     "january": "январь",
     "february": "февраль",
     "march": "март",
@@ -41,5 +47,11 @@
     "sun": "вс",
 
     "calendar": "календарь",
-    "schedule": "расписание"
+    "schedule": "расписание",
+    "dashboard": "панель управления",
+    "profile": "профиль",
+    "logout": "выйти",
+    "settings": "настройки",
+
+    "profile information": "Информация о профиле"
 }

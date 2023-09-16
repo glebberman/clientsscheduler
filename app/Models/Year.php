@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 class Year extends Model
 {
     
-
     static function markCurrentYear(array $years) : array {
         $markedYear = array_map(function($year){
             $year = ['year' => $year, 'current' => $year === date('Y')];
@@ -18,11 +17,7 @@ class Year extends Model
         return $markedYear;
     }
 
-
- 
-
-
-    static function getDaysOfClosestYears($year) {
+    static function getDaysOfClosestYears(string $year) : array {
 
         $firstDay = strtotime(($year - 2) . '-01-01');
         $lastDay = strtotime(($year + 2) . '-12-31');
@@ -34,7 +29,6 @@ class Year extends Model
 
         return $days;
     }
-
 
     static function getEventsByEmployeeAndYear(Employee $employee, int $year): object {
         $events = DB::table('events')

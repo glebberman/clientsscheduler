@@ -1,7 +1,7 @@
 import { Link, Head, router } from "@inertiajs/react";
 import Login from "./Auth/Login";
 
-export default function Welcome({ auth, userCount }) {
+export default function Welcome({ auth, translations, userCount }) {
     if (!auth.user) {
         return (
             <>

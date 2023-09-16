@@ -2,51 +2,61 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
-use App\Models\Employee;
-use App\Models\Month;
 
 class Month extends Model
 {
  
-    static function getNameList() {
+    function getNameList() : array {
+        
         return [
             '1' => [
-                'regular' => __('january'), 
-                'declension' => __('january_declension') ?? __('january')],
+                'regular' => 'january', 
+                'declension' => 'january_declension',
+            ],
             '2' => [
-                'regular' => __('february'), 
-                'declension' => __('february_declension') ??  __('february')],
+                'regular' => 'february', 
+                'declension' => 'february_declension',
+            ],
             '3' => [
-                'regular' => __('march'), 
-                'declension' => __('march_declension') ?? __('march')],
+                'regular' => 'march', 
+                'declension' => 'march_declension',
+            ],
             '4' => [
-                'regular' => __('april'), 
-                'declension' => __('april_declension') ?? __('april')],
+                'regular' => 'april', 
+                'declension' => 'april_declension',
+            ],
             '5' => [
-                'regular' => __('may'), 
-                'declension' => __('may_declension') ?? __('may')],
+                'regular' => 'may', 
+                'declension' => 'may_declension',
+            ],
             '6' => [
-                'regular' => __('june'), 
-                'declension' => __('june_declension') ?? __('june')],
+                'regular' => 'june', 
+                'declension' => 'june_declension',
+            ],
             '7' => [
-                'regular' => __('july'), 
-                'declension' => __('july_declension') ?? __('july')],
+                'regular' => 'july', 
+                'declension' => 'july_declension',
+            ],
             '8' => [
-                'regular' => __('august'), 
-                'declension' => __('august_declension') ?? __('august')],
+                'regular' => 'august', 
+                'declension' => 'august_declension',
+            ],
             '9' => [
-                'regular' => __('september'), 
-                'declension' => __('september_declension') ?? __('september')],
+                'regular' => 'september', 
+                'declension' => 'september_declension',
+            ],
             '10' => [
-                'regular' => __('october'), 
-                'declension' => __('october_declension') ?? __('october')],
+                'regular' => 'october', 
+                'declension' => 'october_declension',
+            ],
             '11' => [
-                'regular' => __('november'), 
-                'declension' => __('november_declension') ?? __('november')],
+                'regular' => 'november', 
+                'declension' => 'november_declension',
+            ],
             '12' => [
-                'regular' => __('december'), 
-                'declension' => __('december_declension') ?? __('december')],
+                'regular' => 'december', 
+                'declension' => 'december_declension',
+            ]
         ];
     }
 

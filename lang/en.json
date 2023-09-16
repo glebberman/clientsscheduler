@@ -1,4 +1,10 @@
 {
+    "language_name": "english",
+    "language_name_english": "english",
+    "language": "language",
+
+    "clients_scheduler": "Clients Scheduler",
+
     "january": "january",
     "february": "february",
     "march": "march",
@@ -20,12 +26,16 @@
     "sunday": "sunday",
     "mon": "mon",
     "tue": "tue",
-    "wed": "wen",
+    "wed": "wed",
     "thu": "thu",
     "fri": "fri",
     "sat": "sat",
     "sun": "sun",
 
     "calendar": "calendar",
-    "schedule": "schedule"
+    "schedule": "schedule",
+    "dashboard": "dashboard",
+    "profile": "profile",
+    "logout": "log out",
+    "settings": "settings"
 }

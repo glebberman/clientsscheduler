@@ -1,18 +1,19 @@
 import { forwardRef, useEffect, useRef } from "react";
 
-export default forwardRef(function TextInput(
+export default forwardRef(function Select(
     {
-        type = "text",
+        label,
         className = "",
         isFocused = false,
-        datalist = {},
+        selectedValue = null,
+        options = {},
         ...props
     },
     ref
 ) {
     const input = ref ? ref : useRef();
-    let datalistElement = "";
-
+    let optionsElements = "";
+    console.log(props);
     useEffect(() => {
         if (isFocused) {
             input.current.focus();
@@ -20,38 +21,34 @@ export default forwardRef(function TextInput(
     }, []);
 
     let id = props.id ?? Math.random().toString(16);
-    console.log(datalist);
-    if (Object.keys(datalist).length) {
-        props.list = `datalist-${id}`;
 
-        datalistElement = (
-            <datalist id={props.list}>
-                {Object.keys(datalist).map((value, index) => {
+    if (Object.keys(options).length) {
+        optionsElements = (
+            <>
+                {Object.keys(options).map((value, index) => {
                     return (
-                        <option
-                            key={`datalist-${id}-${index}`}
-                            value={datalist[value]}
-                        >
-                            {datalist[value]}
+                        <option key={`option-${id}-${index}`}>
+                            {options[value]}
                         </option>
                     );
                 })}
-            </datalist>
+            </>
         );
     }
 
     return (
-        <>
-            <input
+        <label className="grid grid-flow-col items-center">
+            {label && <span>{label}</span>}
+            <select
                 {...props}
-                type={type}
                 className={
                     "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm " +
                     className
                 }
                 ref={input}
-            />
-            {datalistElement}
-        </>
+            >
+                {optionsElements}
+            </select>
+        </label>
     );
 });

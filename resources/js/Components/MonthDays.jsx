@@ -8,6 +8,8 @@ const MonthDays = ({
     weekFirstDay,
     daysNamesShortList,
     monthsNamesList,
+    setActiveYear,
+    setActiveMonth,
     setActiveDay,
     setShowDay,
 }) => {
@@ -42,6 +44,14 @@ const MonthDays = ({
         Object.keys(events[activeYear]["months"][activeMonth]["days"]).length;
 
     const handleDayClick = (event) => {
+        const selectedDate = event.currentTarget.dataset.date.split("-");
+        if (selectedDate[0] !== activeYear) {
+            setActiveYear(selectedDate[0]);
+        }
+        if (selectedDate[1] !== activeMonth) {
+            setActiveMonth(selectedDate[1]);
+        }
+
         setActiveDay(event.currentTarget.dataset.date);
         setShowDay(true);
     };
@@ -80,7 +90,7 @@ const MonthDays = ({
                 <a
                     href="#"
                     key={day.date}
-                    className={`day  flex ${day.monthRelative} ${isActiveMonthClasses}`}
+                    className={`day p-2 sm:p-2 md:p-3 lg:p-4 flex ${day.monthRelative} ${isActiveMonthClasses}`}
                     title={day.date}
                     data-date={day.date}
                     onClick={handleDayClick}
@@ -154,7 +164,7 @@ const MonthDays = ({
                 )}{" "}
                 {activeYear}
             </h2>
-            <div className="title grid grid-cols-7 sm:text-base md:text-xl lg:text-2xl sm:mb-2 md:mb-4 lg:mb-6 text-bold">
+            <div className="title grid grid-cols-7 sm:text-base md:text-xl lg:text-2xl sm:mb-2 md:mb-4 lg:mb-6 text-bold p-2 sm:p-2 md:p-3 lg:p-4">
                 <span>
                     {utils.capitalizeFirstLetter(daysNamesShortList[1])}
                 </span>

@@ -10,6 +10,7 @@ import HorizontalScroller from "@/Components/HorizontalScroller";
 
 export default function Calendar({
     auth,
+    translations,
     settings,
     weekFirstDay,
     defaultActiveYear,
@@ -18,7 +19,6 @@ export default function Calendar({
     monthsNamesList,
     daysNamesList,
     daysNamesShortList,
-    trans,
     events,
     employees,
     defaultEmployee,
@@ -28,19 +28,9 @@ export default function Calendar({
     const [activeMonth, setActiveMonth] = useState(defaultActiveMonth);
     const [activeDay, setActiveDay] = useState(defaultActiveDay);
     const [showDay, setShowDay] = useState(true);
-    console.log(activeDay);
+
     const activeDayMonthNumber = activeDay.split("-")[2];
-    console.log(monthsNamesList);
 
-    const handleSetActiveMonth = (newMonth) => {
-        setActiveMonth(newMonth);
-    };
-
-    const handleSetActiveYear = (newYear) => {
-        setActiveYear(parseInt(newYear));
-    };
-
-    console.log(events);
     let yearsEventsCount = {};
     Object.keys(events).forEach((year) => {
         yearsEventsCount[year] = {
@@ -59,15 +49,14 @@ export default function Calendar({
         };
     });
 
-    console.log(showDay);
-
     return (
         <AuthenticatedLayout
             user={auth.user}
+            translations={translations}
             header={
                 <>
                     <h2 className="inline-block font-semibold text-xl text-gray-800 leading-tight">
-                        {utils.capitalizeFirstLetter(trans["schedule"])}
+                        {utils.capitalizeFirstLetter(translations.schedule)}
                     </h2>
                     <EmployeesList
                         employees={employees}
@@ -76,12 +65,12 @@ export default function Calendar({
                 </>
             }
         >
-            <Head title="Calendar" />
+            <Head title={utils.capitalizeFirstLetter(translations.schedule)} />
             <HorizontalScroller
                 id="years-scroller"
                 dataToScroll={yearsEventsCount}
                 activeItem={activeYear}
-                setActiveItem={handleSetActiveYear}
+                setActiveItem={setActiveYear}
                 setShowDay={setShowDay}
             />
 
@@ -89,7 +78,7 @@ export default function Calendar({
                 id="months-scroller"
                 dataToScroll={monthsEventsCount}
                 activeItem={activeMonth}
-                setActiveItem={handleSetActiveMonth}
+                setActiveItem={setActiveMonth}
                 setShowDay={setShowDay}
             />
 
@@ -117,7 +106,7 @@ export default function Calendar({
                                         ]["days"][activeDayMonthNumber][
                                             "dayOfWeek"
                                         ]
-                                    ) + 1
+                                    )
                                 ]
                             }
                             setActiveDay={setActiveDay}
@@ -141,6 +130,8 @@ export default function Calendar({
                             daysNamesShortList={daysNamesShortList}
                             monthsNamesList={monthsNamesList}
                             setShowDay={setShowDay}
+                            setActiveYear={setActiveYear}
+                            setActiveMonth={setActiveMonth}
                             setActiveDay={setActiveDay}
                         />
                     </div>

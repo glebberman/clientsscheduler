@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Calendar;
 use App\Models\Settings;
+use App\Models\Translation;
 use App\Models\Day;
 use App\Models\Month;
 use App\Models\Year;
@@ -21,6 +22,9 @@ class CalendarController extends Controller
         $employees = Employee::all();
         $events = Event::getByEmployeeAndYear($defaultEmployee, date('Y'));
         $years = Calendar::getYears($defaultEmployee);
+        $month = new Month();
+        $day = new Day();
+        $translation = new Translation();
         
         return Inertia::render('Calendar', [
             'settings' => Settings::getAssoc(),
@@ -30,13 +34,11 @@ class CalendarController extends Controller
             'defaultActiveYear' => date('Y'),
             'defaultEmployee' => $defaultEmployee,
             'yearsData' => $years,
-            'monthsNamesList' => Month::getNameList(),
+            'monthsNamesList' => Translation::map($month->getNameList()),
             'employees' => $employees,
-            'daysNamesList' => Day::getNameList(),
-            'daysNamesShortList' => Day::getShortNameList(),
-            'trans' => function () {
-                return json_decode(file_get_contents(base_path('lang/'. app()->getLocale() .'.json')), true);
-            },
+            'daysNamesList' => Translation::map($day->getNameList()),
+            'daysNamesShortList' =>  Translation::map($day->getShortNameList()),
+            'translations' => $translation->getAll(),
             'events' => Event::hierarchizeEventsByDate($events, array_key_first($years), array_key_last($years)),
             'everyDay'  => Event::getEveryYearWithCounts(date('Y')),
         ]);

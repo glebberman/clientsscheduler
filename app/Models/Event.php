@@ -33,7 +33,7 @@ class Event extends Model
         return $this->hasOne(Client::class);
     }
 
-    static function getByEmployeeAndYear(Employee $employee, int $year): object {
+    static function getByEmployeeAndYear(Employee $employee, int $year) : array {
         $events = DB::table('events')
              ->join('event_types', 'event_types.id', '=', 'events.event_types_id')
              ->join('employees', 'employees.id', '=', 'events.employees_id')
@@ -65,7 +65,7 @@ class Event extends Model
              ->where('events.start_time', '>=', $year . '-01-01 00:00:00')
              ->where('events.start_time', '<=', $year . '-12-31 23:59:59')
              ->orderByDesc('events.start_time')
-             ->get();
+             ->get()->toArray();
 
         return $events ?? [];
     }  
@@ -105,7 +105,7 @@ class Event extends Model
                                 clients.comments AS client_comments'))
              ->where('events.id', '=', $event_id)
              ->orderByDesc('events.start_time')
-             ->get();
+             ->get()->toArray();
 
         return $event;
     }
@@ -196,7 +196,7 @@ class Event extends Model
         return $countByYear ?? [];
     }  
 
-    static function hierarchizeEventsByDate($events, $yearStart, $yearEnd) {
+    static function hierarchizeEventsByDate(array $events, string $yearStart, string $yearEnd) : array {
         $daysHierarchy = new Day($yearStart, $yearEnd);
         $hierarchizedEvents = $daysHierarchy->get();
 
